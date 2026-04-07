@@ -407,7 +407,7 @@ def find_template(ext: str):
 # ══════════════════════════════════════════════════════════════════
 # UI
 # ══════════════════════════════════════════════════════════════════
-st.set_page_config(page_title="리더십 영향력 진단 결과 자동화", layout="wide")
+st.set_page_config(page_title="리더십 영향력 진단 결과 자동화 (구글 폼 응답용)", layout="wide")
 
 # ── 사이드바: 문항 매핑 참고 ──
 with st.sidebar:
@@ -437,15 +437,15 @@ with st.sidebar:
     else:
         st.info("mapping_strategy.jpg를 GitHub 루트에 업로드해주세요")
 
-st.title("CLiCK _ 리더십 영향력 진단 결과 자동화")
+st.title("CLiCK _ 리더십 영향력 진단 결과 자동화 (구글 폼 응답용)")
+st.markdown("---")
 
-st.markdown("---")
-st.markdown("""
+st.info("""
 **📋 업로드 전 확인사항**
-- 구글 폼 응답을 엑셀로 다운로드한 파일을 업로드해주세요
+- 이 자동화는 구글 폼 응답 raw 데이터를 대상으로 합니다
+- 구글 폼 응답을 엑셀로 다운로드한 파일을 업로드해주세요 (파일 1개, 1행=1응답자 형식)
+- 응답자별 개인 엑셀 파일이 있다면 → [개인 엑셀 파일용 자동화](https://leadershipinfluencev2-htierxuqwg8zwdv3afcqbr.streamlit.app/)
 """)
-response_file = st.file_uploader("구글 폼 응답 엑셀 (.xlsx)", type=["xlsx","xls"])
-st.markdown("---")
 
 if st.button("🚀 보고서 생성", type="primary", use_container_width=True):
     if response_file is None:
