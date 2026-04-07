@@ -447,6 +447,9 @@ st.info("""
 - 응답자별 개인 엑셀 파일이 있다면 → [개인 엑셀 파일용 자동화](https://leadershipinfluencev2-htierxuqwg8zwdv3afcqbr.streamlit.app/)
 """)
 
+response_file = st.file_uploader("구글 폼 응답 엑셀 (.xlsx)", type=["xlsx","xls"])
+st.markdown("---")
+
 if st.button("🚀 보고서 생성", type="primary", use_container_width=True):
     if response_file is None:
         st.error("❌ 응답 엑셀을 업로드해주세요."); st.stop()
