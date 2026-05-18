@@ -405,15 +405,249 @@ def find_template(ext: str):
     return None, None
 
 # ══════════════════════════════════════════════════════════════════
-# UI
+# UI 스타일
 # ══════════════════════════════════════════════════════════════════
-st.set_page_config(page_title="리더십 영향력 진단 결과 자동화 (구글 폼 응답용)", layout="wide")
-
-# ── 사이드바: 문항 매핑 참고 ──
+st.set_page_config(
+    page_title="CLiCK | 리더십 영향력 진단",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+ 
+st.markdown("""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+ 
+html, body, [class*="css"] {
+    font-family: 'Noto Sans KR', 'DM Sans', sans-serif;
+}
+ 
+/* 전체 배경 */
+.stApp {
+    background-color: #F5F6F8;
+}
+ 
+/* 사이드바 */
+[data-testid="stSidebar"] {
+    background-color: #0F2744;
+    border-right: none;
+}
+[data-testid="stSidebar"] * {
+    color: #CBD5E1 !important;
+}
+[data-testid="stSidebar"] h1,
+[data-testid="stSidebar"] h2,
+[data-testid="stSidebar"] h3,
+[data-testid="stSidebar"] strong {
+    color: #FFFFFF !important;
+}
+[data-testid="stSidebar"] .stCaption {
+    color: #64748B !important;
+}
+ 
+/* 메인 컨텐츠 패딩 */
+.main .block-container {
+    padding: 2rem 3rem 3rem 3rem;
+    max-width: 900px;
+}
+ 
+/* 헤더 영역 */
+.app-header {
+    background: linear-gradient(135deg, #0F2744 0%, #1E3A5F 100%);
+    border-radius: 12px;
+    padding: 2.2rem 2.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+.app-header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 50%;
+}
+.app-header::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; right: 60px;
+    width: 140px; height: 140px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 50%;
+}
+.app-header .badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.12);
+    color: #93C5FD;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    margin-bottom: 0.9rem;
+}
+.app-header h1 {
+    color: #FFFFFF;
+    font-size: 1.65rem;
+    font-weight: 700;
+    margin: 0 0 0.4rem 0;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+}
+.app-header p {
+    color: #93AECF;
+    font-size: 0.88rem;
+    margin: 0;
+    font-weight: 400;
+}
+ 
+/* 안내 카드 */
+.guide-card {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-left: 4px solid #1E3A5F;
+    border-radius: 10px;
+    padding: 1.4rem 1.6rem;
+    margin-bottom: 1.6rem;
+}
+.guide-card .guide-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #1E3A5F;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.7rem;
+}
+.guide-card ul {
+    margin: 0;
+    padding-left: 1.2rem;
+    color: #475569;
+    font-size: 0.875rem;
+    line-height: 1.8;
+}
+.guide-card ul li::marker {
+    color: #1E3A5F;
+}
+ 
+/* 업로드 섹션 라벨 */
+.section-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #64748B;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+ 
+/* 파일 업로더 커스텀 */
+[data-testid="stFileUploader"] {
+    background: #FFFFFF;
+    border: 1.5px dashed #CBD5E1;
+    border-radius: 10px;
+    padding: 0.5rem;
+    transition: border-color 0.2s;
+}
+[data-testid="stFileUploader"]:hover {
+    border-color: #1E3A5F;
+}
+ 
+/* 생성 버튼 */
+.stButton > button {
+    background: linear-gradient(135deg, #0F2744, #1E3A5F);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    padding: 0.7rem 1.5rem;
+    letter-spacing: 0.02em;
+    width: 100%;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(15,39,68,0.25);
+}
+.stButton > button:hover {
+    background: linear-gradient(135deg, #1a3a5c, #265080);
+    box-shadow: 0 4px 14px rgba(15,39,68,0.35);
+    transform: translateY(-1px);
+}
+.stButton > button:active {
+    transform: translateY(0);
+}
+ 
+/* 성공 메시지 */
+.result-banner {
+    background: linear-gradient(135deg, #ECFDF5, #D1FAE5);
+    border: 1px solid #6EE7B7;
+    border-radius: 10px;
+    padding: 1.1rem 1.5rem;
+    margin: 1.2rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+}
+.result-banner .icon { font-size: 1.3rem; }
+.result-banner .text {
+    color: #065F46;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+ 
+/* 다운로드 버튼 그룹 */
+.download-section {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 10px;
+    padding: 1.4rem 1.6rem;
+    margin-top: 0.8rem;
+}
+.download-section .dl-title {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #94A3B8;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+[data-testid="stDownloadButton"] > button {
+    background: #F8FAFC;
+    color: #1E3A5F;
+    border: 1.5px solid #CBD5E1;
+    border-radius: 8px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.55rem 1rem;
+    width: 100%;
+    transition: all 0.18s ease;
+}
+[data-testid="stDownloadButton"] > button:hover {
+    background: #EFF6FF;
+    border-color: #1E3A5F;
+    color: #0F2744;
+}
+ 
+/* 구분선 */
+hr {
+    border: none;
+    border-top: 1px solid #E2E8F0;
+    margin: 1.5rem 0;
+}
+ 
+/* 에러 메시지 */
+.stAlert {
+    border-radius: 8px;
+    font-size: 0.875rem;
+}
+</style>
+""", unsafe_allow_html=True)
+ 
+# ── 사이드바 ──
 with st.sidebar:
     st.markdown("### 📋 문항 매핑 참고")
-    st.caption("이미지를 클릭하면 확대됩니다")
-
+    st.caption("진단 문항과 역량 매핑 기준표")
+ 
     def find_image(filename):
         base = Path(__file__).parent
         p = base / filename
@@ -421,92 +655,148 @@ with st.sidebar:
         p2 = Path(os.getcwd()) / filename
         if p2.exists(): return str(p2)
         return None
-
+ 
     img_stage    = find_image("mapping_stage.jpg")
     img_strategy = find_image("mapping_strategy.jpg")
-
+ 
     if img_stage:
         st.markdown("**▶ 리더십 영향력 단계**")
-        st.image(str(img_stage), width='stretch')
+        st.image(str(img_stage), use_container_width=True)
     else:
-        st.info("mapping_stage.jpg를 GitHub 루트에 업로드해주세요")
-
+        st.info("mapping_stage.jpg를 루트에 업로드해주세요")
+ 
     if img_strategy:
         st.markdown("**▶ 리더십 영향력 전략**")
-        st.image(str(img_strategy), width='stretch')
+        st.image(str(img_strategy), use_container_width=True)
     else:
-        st.info("mapping_strategy.jpg를 GitHub 루트에 업로드해주세요")
-
-st.title("CLiCK _ 리더십 영향력 진단 결과 자동화 (구글 폼 응답용)")
-st.markdown("---")
-
-st.info("""
-**📋 업로드 전 확인사항**
-- 이 자동화는 구글 폼 응답 raw 데이터를 대상으로 합니다
-- 구글 폼 응답을 엑셀로 다운로드한 파일을 업로드해주세요 (파일 1개, 1행=1응답자 형식)
-- 응답자별 개인 엑셀 파일이 있다면 → [개인 엑셀 파일용 자동화](https://leadershipinfluencev2-htierxuqwg8zwdv3afcqbr.streamlit.app/)
-""")
-
-response_file = st.file_uploader("구글 폼 응답 엑셀 (.xlsx)", type=["xlsx","xls"])
-st.markdown("---")
-
-if st.button("🚀 보고서 생성", type="primary", use_container_width=True):
+        st.info("mapping_strategy.jpg를 루트에 업로드해주세요")
+ 
+    st.markdown("---")
+    st.markdown("**CLiCK**")
+    st.caption("리더십 영향력 진단 자동화 시스템 v1.0")
+ 
+# ── 메인 헤더 ──
+st.markdown("""
+<div class="app-header">
+    <div class="badge">CLiCK Automation</div>
+    <h1>리더십 영향력 진단 결과 자동화</h1>
+    <p>구글 폼 응답 데이터를 업로드하면 개인별 진단 보고서(Excel · PPT)를 자동으로 생성합니다.</p>
+</div>
+""", unsafe_allow_html=True)
+ 
+# ── 안내 카드 ──
+st.markdown("""
+<div class="guide-card">
+    <div class="guide-title">📌 업로드 전 확인사항</div>
+    <ul>
+        <li>구글 폼 응답을 <strong>엑셀(.xlsx)로 다운로드</strong>한 파일을 업로드하세요.</li>
+        <li>파일 형식: <strong>1행 = 헤더, 2행부터 = 응답자 데이터</strong> (구글 폼 기본 형식)</li>
+        <li>응답자별 개인 엑셀 파일이 있다면 → <a href="https://leadershipinfluencev2-htierxuqwg8zwdv3afcqbr.streamlit.app/" target="_blank">개인 엑셀 파일용 자동화</a>를 이용하세요.</li>
+    </ul>
+</div>
+""", unsafe_allow_html=True)
+ 
+# ── 파일 업로더 ──
+st.markdown('<div class="section-label">응답 데이터 업로드</div>', unsafe_allow_html=True)
+response_file = st.file_uploader(
+    "구글 폼 응답 엑셀 파일을 선택하세요",
+    type=["xlsx", "xls"],
+    label_visibility="collapsed"
+)
+ 
+st.markdown("<hr>", unsafe_allow_html=True)
+ 
+# ── 생성 버튼 ──
+if st.button("보고서 생성", type="primary", use_container_width=True):
     if response_file is None:
-        st.error("❌ 응답 엑셀을 업로드해주세요."); st.stop()
-
+        st.error("응답 엑셀 파일을 먼저 업로드해주세요.")
+        st.stop()
+ 
     resp_bytes = response_file.read()
-
+ 
     excel_tpl, ep = find_template(".xlsx")
-    if not excel_tpl: st.error("❌ 엑셀 템플릿 없음 (GitHub 루트에 .xlsx 파일 필요)"); st.stop()
-
+    if not excel_tpl:
+        st.error("엑셀 템플릿 파일을 찾을 수 없습니다. GitHub 루트에 .xlsx 파일을 업로드해주세요.")
+        st.stop()
+ 
     ppt_tpl, pp = find_template(".pptx")
-    if not ppt_tpl: st.error("❌ PPT 템플릿 없음 (GitHub 루트에 .pptx 파일 필요)"); st.stop()
-
+    if not ppt_tpl:
+        st.error("PPT 템플릿 파일을 찾을 수 없습니다. GitHub 루트에 .pptx 파일을 업로드해주세요.")
+        st.stop()
+ 
     try:
         people = parse_people(resp_bytes)
     except Exception as e:
-        st.error(f"❌ 파싱 실패: {e}"); st.code(traceback.format_exc()); st.stop()
-
-    if not people: st.error("❌ 응답자 없음"); st.stop()
-
-    with st.spinner(f"⏳ {len(people)}명 보고서 생성 중..."):
+        st.error(f"파일 파싱 중 오류가 발생했습니다: {e}")
+        st.code(traceback.format_exc())
+        st.stop()
+ 
+    if not people:
+        st.error("응답자 데이터를 찾을 수 없습니다. 파일 형식을 확인해주세요.")
+        st.stop()
+ 
+    with st.spinner(f"{len(people)}명의 보고서를 생성하고 있습니다..."):
         try:
             excel_out = build_excel(people, excel_tpl)
         except Exception as e:
-            st.error(f"❌ 엑셀 실패: {e}"); st.code(traceback.format_exc()); st.stop()
+            st.error(f"엑셀 생성 중 오류가 발생했습니다: {e}")
+            st.code(traceback.format_exc())
+            st.stop()
         try:
             ppt_out = build_ppt(people, ppt_tpl)
         except Exception as e:
-            st.error(f"❌ PPT 실패: {e}"); st.code(traceback.format_exc()); st.stop()
-
+            st.error(f"PPT 생성 중 오류가 발생했습니다: {e}")
+            st.code(traceback.format_exc())
+            st.stop()
+ 
     st.session_state["excel_out"] = excel_out
     st.session_state["ppt_out"]   = ppt_out
     st.session_state["n"]         = len(people)
     st.session_state["done"]      = True
-
+ 
+# ── 완료 및 다운로드 ──
 if st.session_state.get("done"):
     excel_out = st.session_state["excel_out"]
     ppt_out   = st.session_state["ppt_out"]
     n         = st.session_state["n"]
-
-    st.success(f"🎉 완료: 엑셀 {n}시트 + PPT {n}슬라이드")
-
+ 
+    st.markdown(f"""
+    <div class="result-banner">
+        <span class="icon">✅</span>
+        <span class="text">보고서 생성 완료 — 총 <strong>{n}명</strong> | Excel {n}시트 · PPT {n}슬라이드</span>
+    </div>
+    """, unsafe_allow_html=True)
+ 
     zip_buf = io.BytesIO()
     with zipfile.ZipFile(zip_buf, "w", zipfile.ZIP_DEFLATED) as zf:
         zf.writestr("CIAM_리더십영향력_진단지.xlsx", excel_out)
-        zf.writestr("CIAM_리더십영향력_진단결과.pptx",   ppt_out)
-
-    d1, d2, d3 = st.columns(3)
-    with d1:
-        st.download_button("⬇️ ZIP (전체)", data=zip_buf.getvalue(),
-            file_name="CIAM_리더십영향력_결과.zip", mime="application/zip", use_container_width=True)
-    with d2:
-        st.download_button("⬇️ 엑셀", data=excel_out,
+        zf.writestr("CIAM_리더십영향력_진단결과.pptx", ppt_out)
+ 
+    st.markdown('<div class="download-section"><div class="dl-title">📥 파일 다운로드</div>', unsafe_allow_html=True)
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.download_button(
+            "전체 ZIP 다운로드",
+            data=zip_buf.getvalue(),
+            file_name="CIAM_리더십영향력_결과.zip",
+            mime="application/zip",
+            use_container_width=True
+        )
+    with col2:
+        st.download_button(
+            "Excel만 다운로드",
+            data=excel_out,
             file_name="CIAM_리더십영향력_진단지.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            use_container_width=True)
-    with d3:
-        st.download_button("⬇️ PPT", data=ppt_out,
+            use_container_width=True
+        )
+    with col3:
+        st.download_button(
+            "PPT만 다운로드",
+            data=ppt_out,
             file_name="CIAM_리더십영향력_진단결과.pptx",
             mime="application/vnd.openxmlformats-officedocument.presentationml.presentation",
-            use_container_width=True)
+            use_container_width=True
+        )
+    st.markdown('</div>', unsafe_allow_html=True)
+ 
