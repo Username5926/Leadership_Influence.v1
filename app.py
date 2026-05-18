@@ -678,7 +678,7 @@ with st.sidebar:
 # ── 메인 헤더 ──
 st.markdown("""
 <div class="app-header">
-    <div class="badge">CLiCK Automation</div>
+    <div class="badge">CLiCK</div>
     <h1>리더십 영향력 진단 결과 자동화</h1>
     <p>구글 폼 응답 데이터를 업로드하면 개인별 진단 보고서(Excel · PPT)를 자동으로 생성합니다.</p>
 </div>
